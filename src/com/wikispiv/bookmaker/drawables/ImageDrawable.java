@@ -20,8 +20,6 @@ public class ImageDrawable extends Drawable implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private static final String IMG_DIRECTORY = "Images";
-
     private String imageName;
     private transient BufferedImage cachedJavaImage;
     private transient PDDocument lastDocument;
@@ -82,7 +80,7 @@ public class ImageDrawable extends Drawable implements Serializable
         if (currentFile == null || !currentFile.exists()) {
             return null;
         }
-        return new File(currentFile.getParentFile(), IMG_DIRECTORY);
+        return new File(currentFile.getParentFile(), Main.IMG_DIRECTORY);
     }
 
 }

@@ -108,6 +108,7 @@ public class SaveHandler
                 setCurrentFile(file);
                 songListNeedsUpdating();
                 somethingChanged(false);
+                Main.getImageMonitor().monitor();
             } catch (IOException | ClassNotFoundException e) {
                 JOptionPane.showMessageDialog(Main.getBmf(), e.getLocalizedMessage());
                 e.printStackTrace();

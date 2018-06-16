@@ -121,7 +121,7 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
         filterTextField = new javax.swing.JTextField();
         editPanel = new com.wikispiv.bookmaker.ui.EditPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        imageList = new javax.swing.JList<>();
         jLabel2 = new javax.swing.JLabel();
         showUsedCheckbox = new javax.swing.JCheckBox();
         SpinnerNumberModel pageSpinnerModel = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 2);
@@ -237,12 +237,12 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        imageList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(imageList);
 
         jLabel2.setText("Images:");
 
@@ -858,6 +858,7 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     private javax.swing.JTextField filterTextField;
     private javax.swing.JSpinner firstPageSpinner;
     private javax.swing.JComboBox<String> fontComboBox;
+    private javax.swing.JList<String> imageList;
     private javax.swing.JList<String> incompleteSongList;
     private javax.swing.JSpinner indentSizeSpinner;
     private javax.swing.JButton indexBtn;
@@ -878,7 +879,6 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -903,5 +903,10 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     public javax.swing.JList<String> getIncompleteSongList()
     {
         return incompleteSongList;
+    }
+
+    public javax.swing.JList<String> getImageList()
+    {
+        return imageList;
     }
 }

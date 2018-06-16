@@ -1,5 +1,7 @@
 package com.wikispiv.bookmaker;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.security.auth.login.FailedLoginException;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -46,7 +49,7 @@ public class Main
 
     // Maximal rectangle https://gist.github.com/mmadson/9637974
     public static final String UKRAINIAN_PANGRAM = ""
-            + "Жебракують філософи при ґанку церкви в Гадячі, ще й шатро їхнє п’яне знаємо.\n\n"
+            + "Жебракують філософи при ґанку церкви в Гадячі, ще й шатро їхнє п'яне знаємо.\n\n"
             + "0123456789\n\nThe quick brown fox jumps over the lazy dog!";
 
     public static WSFont DEFAULT_FONT = new WSFont();
@@ -62,9 +65,13 @@ public class Main
     private static BookMakerFrame bmf;
 
     private volatile int reloadProgress = 0;
+
+    public static final String IMG_DIRECTORY = "Images";
     private static SaveHandler saveHandler = new SaveHandler();
 
     private static Main main;
+    
+    private static ImageMonitor imageMonitor;
 
     // https://www.tutorialspoint.com/pdfbox/pdfbox_loading_a_document.htm
 
@@ -77,6 +84,8 @@ public class Main
         bmf = new BookMakerFrame(main);
         Utils.moveToCursor(bmf);
         bmf.setVisible(true);
+        
+        imageMonitor = new ImageMonitor();
 
         somethingChanged(false);
         saveHandler.setDirty(false);
@@ -512,6 +521,11 @@ public class Main
     public static Main getMain()
     {
         return main;
+    }
+
+    public static ImageMonitor getImageMonitor()
+    {
+        return imageMonitor;
     }
 
 }
