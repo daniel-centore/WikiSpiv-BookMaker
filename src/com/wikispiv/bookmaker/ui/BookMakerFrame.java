@@ -152,8 +152,6 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
         exportBtn = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         saveAsBtn = new javax.swing.JButton();
-        allLeftCheck = new javax.swing.JCheckBox();
-        allRightCheck = new javax.swing.JCheckBox();
         jButton2 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -165,6 +163,7 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
         insertTextBtn = new javax.swing.JButton();
         onlyFittingCheckbox = new javax.swing.JCheckBox();
         indexBtn = new javax.swing.JButton();
+        toBackBtn = new javax.swing.JButton();
 
         jButton4.setText("jButton4");
 
@@ -400,10 +399,6 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
             }
         });
 
-        allLeftCheck.setText("On all left");
-
-        allRightCheck.setText("On all right");
-
         jButton2.setText("Page No");
         jButton2.setToolTipText("Inserts a page number onto the page");
 
@@ -439,6 +434,8 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
                 indexBtnActionPerformed(evt);
             }
         });
+
+        toBackBtn.setText("to Back");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -500,7 +497,9 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
                                             .addComponent(beforeLyricsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addContainerGap()
-                                    .addComponent(jButton2)))
+                                    .addComponent(jButton2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(toBackBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -511,8 +510,6 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
                                     .addComponent(jLabel10)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(titleAlignCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(allLeftCheck)
-                                .addComponent(allRightCheck)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
@@ -594,11 +591,7 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(titleAlignCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel10))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(allLeftCheck)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(allRightCheck))
+                                    .addComponent(jLabel10)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel7)
@@ -636,7 +629,9 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
                                     .addComponent(kapustaBtn)
                                     .addComponent(indexBtn))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jButton2)
+                                    .addComponent(toBackBtn))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel6)
@@ -785,7 +780,7 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     }//GEN-LAST:event_indexBtnActionPerformed
 
     private void imageListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_imageListValueChanged
-        main.imageListValueChanged(imageList.getSelectedIndex());
+        main.imageListValueChanged(imageList.getSelectedValue());
     }//GEN-LAST:event_imageListValueChanged
 
     public void setFirstPageNum(int firstPageNum)
@@ -853,8 +848,6 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     private javax.swing.JButton addPageC;
     private javax.swing.JButton addPageL;
     private javax.swing.JButton addPageR;
-    private javax.swing.JCheckBox allLeftCheck;
-    private javax.swing.JCheckBox allRightCheck;
     private javax.swing.JButton alphButton;
     private javax.swing.JSpinner beforeLyricsSpinner;
     private javax.swing.JTextArea console;
@@ -907,6 +900,7 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     private javax.swing.JCheckBox showUsedCheckbox;
     private javax.swing.JList<String> sourceSongList;
     private javax.swing.JComboBox<String> titleAlignCombo;
+    private javax.swing.JButton toBackBtn;
     // End of variables declaration//GEN-END:variables
 
     public javax.swing.JList<String> getIncompleteSongList()

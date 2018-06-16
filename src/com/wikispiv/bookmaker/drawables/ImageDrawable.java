@@ -84,4 +84,9 @@ public class ImageDrawable extends Drawable implements Serializable
         return new File(currentFile.getParentFile(), Main.IMG_DIRECTORY);
     }
 
+    public ImageRepresentation getImageRep()
+    {
+        return imageRep;
+    }
+
 }

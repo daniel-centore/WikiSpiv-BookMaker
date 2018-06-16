@@ -13,11 +13,13 @@ import java.util.stream.Collectors;
 
 import com.wikispiv.bookmaker.data.Song;
 import com.wikispiv.bookmaker.drawables.Drawable;
+import com.wikispiv.bookmaker.drawables.ImageDrawable;
 import com.wikispiv.bookmaker.drawables.PageNumDrawable;
 import com.wikispiv.bookmaker.drawables.PreviewDrawable;
 import com.wikispiv.bookmaker.drawables.SongChunkDrawable;
 import com.wikispiv.bookmaker.drawables.WSPage;
 import com.wikispiv.bookmaker.enums.Alignment;
+import com.wikispiv.bookmaker.rendering.ImageRepresentation;
 import com.wikispiv.bookmaker.rendering.WSFont;
 
 public class SpivanykPrefs implements Serializable
@@ -407,6 +409,20 @@ public class SpivanykPrefs implements Serializable
                 if (d instanceof SongChunkDrawable) {
                     SongChunkDrawable scd = (SongChunkDrawable) d;
                     result.add(scd.getSong());
+                }
+            }
+        }
+        return result;
+    }
+    
+    public Collection<ImageRepresentation> findUsedImages()
+    {
+        HashSet<ImageRepresentation> result = new HashSet<>();
+        for (WSPage page : getPages()) {
+            for (Drawable d : page.getDrawables()) {
+                if (d instanceof ImageDrawable) {
+                    ImageDrawable id = (ImageDrawable) d;
+                    result.add(id.getImageRep());
                 }
             }
         }

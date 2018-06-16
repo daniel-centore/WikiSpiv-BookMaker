@@ -166,7 +166,7 @@ public class SaveHandler
         JList<String> imageList = bmf.getImageList();
         DefaultListModel<String> imageModel = new DefaultListModel<String>();
         List<ImageRepresentation> images = new ArrayList<>(Main.getImageMonitor().getLatestImagesList());
-        // images.removeAll(prefs.findUsedImages()); // TODO: Optional
+         images.removeAll(prefs.findUsedImages()); // TODO: Optional
         images.stream().forEach(s -> imageModel.addElement(s.toString()));
         imageList.setModel(imageModel);
 

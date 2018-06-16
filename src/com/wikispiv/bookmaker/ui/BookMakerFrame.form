@@ -107,6 +107,8 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="toBackBtn" min="-2" pref="80" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -120,8 +122,6 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="titleAlignCombo" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="allLeftCheck" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="allRightCheck" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jScrollPane2" alignment="0" min="-2" pref="212" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -227,10 +227,6 @@
                                   <Component id="titleAlignCombo" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="allLeftCheck" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="allRightCheck" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -279,7 +275,10 @@
                                   <Component id="indexBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="toBackBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -745,16 +744,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveAsBtnActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="allLeftCheck">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="On all left"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="allRightCheck">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="On all right"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
         <Property name="text" type="java.lang.String" value="Page No"/>
@@ -812,6 +801,11 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="indexBtnActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="toBackBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="to Back"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

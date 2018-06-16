@@ -1,18 +1,16 @@
 package com.wikispiv.bookmaker;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.security.auth.login.FailedLoginException;
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -72,7 +70,7 @@ public class Main
     private static SaveHandler saveHandler = new SaveHandler();
 
     private static Main main;
-    
+
     private static ImageMonitor imageMonitor;
 
     // https://www.tutorialspoint.com/pdfbox/pdfbox_loading_a_document.htm
@@ -86,7 +84,7 @@ public class Main
         bmf = new BookMakerFrame(main);
         Utils.moveToCursor(bmf);
         bmf.setVisible(true);
-        
+
         imageMonitor = new ImageMonitor();
 
         somethingChanged(false);
@@ -203,12 +201,14 @@ public class Main
             Main.somethingChanged(false);
         }
     }
-    
-    public void imageListValueChanged(int selectedIndex)
+
+    public void imageListValueChanged(String imageTitle)
     {
-        if (selectedIndex >= 0) {
-            ImageRepresentation imageRep = imageMonitor.getLatestImagesList().get(selectedIndex);
-            ImageDrawable id = new ImageDrawable(imageRep);
+        Optional<ImageRepresentation> imageRep = imageMonitor.getLatestImagesList().stream()
+                .filter(s -> s.toString().equals(imageTitle))
+                .findFirst();
+        if (imageRep.isPresent()) {
+            ImageDrawable id = new ImageDrawable(imageRep.get());
             getPrefs().getPreviewDrawable().setPreview(id);
             Main.somethingChanged(false);
         }
@@ -539,7 +539,5 @@ public class Main
     {
         return imageMonitor;
     }
-
-    
 
 }
