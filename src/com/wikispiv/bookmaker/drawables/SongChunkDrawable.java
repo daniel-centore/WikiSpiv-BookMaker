@@ -22,7 +22,7 @@ import com.wikispiv.bookmaker.enums.Alignment;
 import com.wikispiv.bookmaker.rendering.WSFont;
 
 /**
- * Handles drawing some chunks (i.e. title, stanzas) of a Song 
+ * Handles drawing some chunks (i.e. title, stanzas) of a Song
  * 
  * @author Daniel Centore
  *
@@ -45,10 +45,10 @@ public class SongChunkDrawable extends ContinuableDrawable implements Serializab
             throws IOException, IllegalArgumentException
     {
         SpivanykPrefs prefs = Main.getPrefs();
-        
+
         int firstRenderedStanza = getFirstRenderedChunk();
         boolean renderTitle = shouldRenderTitle();
-        
+
         // Draw the title & credits
         double bottomOfTitleY = getY();
         double positionY = getY();
@@ -71,10 +71,10 @@ public class SongChunkDrawable extends ContinuableDrawable implements Serializab
         // Draw stanzas
         double columnWidth = maxStanzaWidth(g2, pg, document, editPanelSize);
         int availableColumns = (int) (this.getWidth() / columnWidth);
-        if (availableColumns < 1) {
-            availableColumns = 1;
-//            setWidth(columnWidth);
-        }
+        // if (availableColumns < 1) {
+        // availableColumns = 1;
+        // setWidth(columnWidth);
+        // }
         double extraSpace = this.getWidth() - columnWidth * availableColumns;
         double betweenColumns = 0;
         if (availableColumns > 1) {
@@ -94,7 +94,9 @@ public class SongChunkDrawable extends ContinuableDrawable implements Serializab
                 positionY = bottomOfTitleY;
             }
 
-            if (positionX + columnWidth > this.getRightX() || positionY + preview.getHeight() > this.getBottomY()) {
+            double EPSILON = 0.01;
+            if (positionX + columnWidth - EPSILON > this.getRightX()
+                    || positionY + preview.getHeight() > this.getBottomY()) {
                 // Can't render any more :(
                 break;
             }
@@ -211,7 +213,7 @@ public class SongChunkDrawable extends ContinuableDrawable implements Serializab
     {
         return includesLastChunk();
     }
-    
+
     @Override
     public int getNumberChunks()
     {
