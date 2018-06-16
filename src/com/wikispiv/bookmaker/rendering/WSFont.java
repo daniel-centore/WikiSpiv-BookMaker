@@ -291,6 +291,10 @@ public class WSFont implements Serializable
                 case '♭':
                     c = 'b';
                     break;
+                case '–':
+                case '—':
+                    c = '-';
+                    break;
             }
 
             if (hasGlyph(document, c)) {
@@ -298,7 +302,7 @@ public class WSFont implements Serializable
             } else if (Character.isWhitespace(c)) {
                 result += " ";
             } else {
-                result += "?";
+                result += "???????????????????????????????";
             }
         }
         sanitizeCache.put(s, result);

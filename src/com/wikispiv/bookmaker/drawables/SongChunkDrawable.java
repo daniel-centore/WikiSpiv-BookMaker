@@ -73,7 +73,7 @@ public class SongChunkDrawable extends ContinuableDrawable implements Serializab
         int availableColumns = (int) (this.getWidth() / columnWidth);
         if (availableColumns < 1) {
             availableColumns = 1;
-            setWidth(columnWidth);
+//            setWidth(columnWidth);
         }
         double extraSpace = this.getWidth() - columnWidth * availableColumns;
         double betweenColumns = 0;
@@ -165,19 +165,19 @@ public class SongChunkDrawable extends ContinuableDrawable implements Serializab
                 }
                 height += maxHeight;
                 y += maxHeight;
-                maxWidth = Math.max(maxWidth, totalLineWidth);
+                maxWidth = Math.max(maxWidth, totalLineWidth + extraX);
             } else if (l.hasChordLine()) {
                 // Just a chord line
                 Rectangle2D chordRect = drawString(chordFont, g2, pg, document, x + extraX, y, l.getChordLine(),
                         actuallyDraw, actuallyDrawPdf, Alignment.LEFT_ALIGNED, 0, editPanelSize);
-                maxWidth = Math.max(maxWidth, chordRect.getWidth());
+                maxWidth = Math.max(maxWidth, chordRect.getWidth() + extraX);
                 height += chordRect.getHeight();
                 y += chordRect.getHeight();
             } else if (l.hasLyricLine()) {
                 // Just a text line
                 Rectangle2D lineRect = drawString(textFont, g2, pg, document, x + extraX, y, l.getLyricLine(),
                         actuallyDraw, actuallyDrawPdf, Alignment.LEFT_ALIGNED, 0, editPanelSize);
-                maxWidth = Math.max(maxWidth, lineRect.getWidth());
+                maxWidth = Math.max(maxWidth, lineRect.getWidth() + extraX);
                 height += lineRect.getHeight();
                 y += lineRect.getHeight();
             } else {
