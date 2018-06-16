@@ -389,6 +389,14 @@ public class EditPanel extends JPanel implements MouseMotionListener, MouseListe
             case KeyEvent.VK_ENTER:
                 Main.getMain().savePreviewPressed();
                 break;
+                
+            case KeyEvent.VK_PAGE_UP:
+                Main.getMain().pageSpinnerSet((int) Main.getPrefs().getCurrentLeftPageIndex() - 2);
+                break;
+                
+            case KeyEvent.VK_PAGE_DOWN:
+                Main.getMain().pageSpinnerSet((int) Main.getPrefs().getCurrentLeftPageIndex() + 2);
+                break;
         }
     }
 
