@@ -15,19 +15,20 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import com.wikispiv.bookmaker.Main;
 import com.wikispiv.bookmaker.Utils;
+import com.wikispiv.bookmaker.rendering.ImageRepresentation;
 
 public class ImageDrawable extends Drawable implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private String imageName;
+    private ImageRepresentation imageRep;
     private transient BufferedImage cachedJavaImage;
     private transient PDDocument lastDocument;
     private transient PDImageXObject cachedPdfImage;
 
-    public ImageDrawable(String imageName)
+    public ImageDrawable(ImageRepresentation imageRep)
     {
-        this.imageName = imageName;
+        this.imageRep = imageRep;
     }
 
     @Override
@@ -35,9 +36,9 @@ public class ImageDrawable extends Drawable implements Serializable
             boolean actuallyDraw, boolean actuallyDrawPdf) throws IOException
     {
         BufferedImage image = getJavaImage();
-        Dimension scaledDimension = Utils.getScaledDimension(new Dimension(image.getWidth(), image.getHeight()),
-                getDimension());
         if (image != null) {
+            Dimension scaledDimension = Utils.getScaledDimension(new Dimension(image.getWidth(), image.getHeight()),
+                    getDimension());
             if (actuallyDraw) {
                 g2.drawImage(image, (int) getX(), (int) getY(), (int) scaledDimension.getWidth(),
                         (int) scaledDimension.getHeight(), null);
@@ -56,7 +57,7 @@ public class ImageDrawable extends Drawable implements Serializable
             return cachedPdfImage;
         }
         cachedPdfImage = PDImageXObject
-                .createFromFile(new File(getImageDirectory(), imageName).getAbsolutePath(), document);
+                .createFromFile(imageRep.file.getAbsolutePath(), document);
         lastDocument = document;
         return cachedPdfImage;
     }
@@ -65,10 +66,10 @@ public class ImageDrawable extends Drawable implements Serializable
     {
         if (cachedJavaImage == null) {
             try {
-                this.cachedJavaImage = ImageIO.read(new File(getImageDirectory(), imageName));
-            } catch (IOException e) {
-                e.printStackTrace();
-                Main.println(e.getMessage());
+                this.cachedJavaImage = ImageIO.read(imageRep.file);
+            } catch (Exception e) {
+                // e.printStackTrace();
+                Main.println("Problem with image " + (imageRep == null ? "null" : imageRep.file.toString()));
             }
         }
         return this.cachedJavaImage;

@@ -242,6 +242,11 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        imageList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                imageListValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(imageList);
 
         jLabel2.setText("Images:");
@@ -778,6 +783,10 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     private void indexBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_indexBtnActionPerformed
         main.indexBtnPushed();
     }//GEN-LAST:event_indexBtnActionPerformed
+
+    private void imageListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_imageListValueChanged
+        main.imageListValueChanged(imageList.getSelectedIndex());
+    }//GEN-LAST:event_imageListValueChanged
 
     public void setFirstPageNum(int firstPageNum)
     {

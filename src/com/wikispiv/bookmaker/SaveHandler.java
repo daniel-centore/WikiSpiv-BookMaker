@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.swing.Action;
@@ -21,6 +20,7 @@ import javax.swing.filechooser.FileFilter;
 
 import com.wikispiv.bookmaker.data.Song;
 import com.wikispiv.bookmaker.drawables.Drawable;
+import com.wikispiv.bookmaker.rendering.ImageRepresentation;
 import com.wikispiv.bookmaker.ui.BookMakerFrame;
 
 public class SaveHandler
@@ -157,25 +157,33 @@ public class SaveHandler
             dirty = true;
         }
         BookMakerFrame bmf = Main.getBmf();
-        
+
         Main.drawAllPages();
 
         String selectedCategory = prefs.getSelectedCategory();
 
+        // Images
+        JList<String> imageList = bmf.getImageList();
+        DefaultListModel<String> imageModel = new DefaultListModel<String>();
+        List<ImageRepresentation> images = new ArrayList<>(Main.getImageMonitor().getLatestImagesList());
+        // images.removeAll(prefs.findUsedImages()); // TODO: Optional
+        images.stream().forEach(s -> imageModel.addElement(s.toString()));
+        imageList.setModel(imageModel);
+
         // Source songs
         JList<String> sourceSongList = bmf.getSourceSongList();
-        DefaultListModel<String> model = new DefaultListModel<String>();
+        DefaultListModel<String> sourceSongModel = new DefaultListModel<String>();
         List<Song> songs = new ArrayList<>(prefs.getAllSongs());
-        songs.removeAll(prefs.findUsedSongs());  // TODO: Optional
+        songs.removeAll(prefs.findUsedSongs()); // TODO: Optional
         if (prefs.isShowOnlyFitting()) {
             songs.retainAll(prefs.findFittingSongs());
         }
         for (Song s : songs) {
             if (selectedCategory == null || s.getCategories().contains(selectedCategory)) {
-                model.addElement(s.getMainTitle());
+                sourceSongModel.addElement(s.getMainTitle());
             }
         }
-        sourceSongList.setModel(model);
+        sourceSongList.setModel(sourceSongModel);
 
         // Incomplete songs
         JList<String> incompleteSongList = bmf.getIncompleteSongList();
@@ -215,7 +223,7 @@ public class SaveHandler
         bmf.setIndentSizeSpinner(prefs.getIndentSize());
         bmf.setBeforeLyricsSpinner(prefs.getBeforeLyrics());
         bmf.setFirstPageNum(prefs.getFirstPageNum());
-        
+
         // Other checkboxes
         bmf.setOnlyFittingCheckbox(prefs.isShowOnlyFitting());
     }

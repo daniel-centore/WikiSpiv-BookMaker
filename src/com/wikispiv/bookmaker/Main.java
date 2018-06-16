@@ -25,12 +25,14 @@ import org.wikipedia.Wiki;
 import com.wikispiv.bookmaker.data.Song;
 import com.wikispiv.bookmaker.drawables.AlignableDrawable;
 import com.wikispiv.bookmaker.drawables.Drawable;
+import com.wikispiv.bookmaker.drawables.ImageDrawable;
 import com.wikispiv.bookmaker.drawables.IndexDrawable;
 import com.wikispiv.bookmaker.drawables.PreviewDrawable;
 import com.wikispiv.bookmaker.drawables.SongChunkDrawable;
 import com.wikispiv.bookmaker.drawables.WSPage;
 import com.wikispiv.bookmaker.enums.PageInsertPosition;
 import com.wikispiv.bookmaker.enums.PageSide;
+import com.wikispiv.bookmaker.rendering.ImageRepresentation;
 import com.wikispiv.bookmaker.rendering.WSFont;
 import com.wikispiv.bookmaker.tasks.ReloadSongs;
 import com.wikispiv.bookmaker.ui.BookMakerFrame;
@@ -198,6 +200,16 @@ public class Main
         if (s != null) {
             SongChunkDrawable songChunkDrawable = new SongChunkDrawable(s);
             getPrefs().getPreviewDrawable().setPreview(songChunkDrawable);
+            Main.somethingChanged(false);
+        }
+    }
+    
+    public void imageListValueChanged(int selectedIndex)
+    {
+        if (selectedIndex >= 0) {
+            ImageRepresentation imageRep = imageMonitor.getLatestImagesList().get(selectedIndex);
+            ImageDrawable id = new ImageDrawable(imageRep);
+            getPrefs().getPreviewDrawable().setPreview(id);
             Main.somethingChanged(false);
         }
     }
@@ -527,5 +539,7 @@ public class Main
     {
         return imageMonitor;
     }
+
+    
 
 }
