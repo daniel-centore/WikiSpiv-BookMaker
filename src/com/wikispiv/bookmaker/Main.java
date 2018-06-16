@@ -213,6 +213,17 @@ public class Main
             Main.somethingChanged(false);
         }
     }
+    
+    public void sendToBack()
+    {
+        Drawable selectedDrawable = getBmf().getEditPanel().getSelectedDrawable();
+        if (selectedDrawable != null) {
+            WSPage page = getBmf().getEditPanel().getSelectedEvent().getPage();
+            page.getDrawables().remove(selectedDrawable);
+            page.getDrawables().add(0, selectedDrawable);
+        }
+        somethingChanged();
+    }
 
     public void onlyFittingChanged(boolean onlyFitting)
     {

@@ -67,8 +67,6 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     public void somethingSelected(Drawable selectedDrawable)
     {
         boolean isSelected = selectedDrawable != null;
-        allLeftCheck.setEnabled(isSelected);
-        allRightCheck.setEnabled(isSelected);
         
         titleAlignCombo.setEnabled(isSelected && selectedDrawable instanceof SongChunkDrawable);
         if (isSelected && selectedDrawable instanceof AlignableDrawable) {
@@ -436,6 +434,11 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
         });
 
         toBackBtn.setText("to Back");
+        toBackBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toBackBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -782,6 +785,10 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     private void imageListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_imageListValueChanged
         main.imageListValueChanged(imageList.getSelectedValue());
     }//GEN-LAST:event_imageListValueChanged
+
+    private void toBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toBackBtnActionPerformed
+        main.sendToBack();
+    }//GEN-LAST:event_toBackBtnActionPerformed
 
     public void setFirstPageNum(int firstPageNum)
     {
