@@ -27,6 +27,7 @@ import com.wikispiv.bookmaker.drawables.ImageDrawable;
 import com.wikispiv.bookmaker.drawables.IndexDrawable;
 import com.wikispiv.bookmaker.drawables.PreviewDrawable;
 import com.wikispiv.bookmaker.drawables.SongChunkDrawable;
+import com.wikispiv.bookmaker.drawables.TextLineDrawable;
 import com.wikispiv.bookmaker.drawables.WSPage;
 import com.wikispiv.bookmaker.enums.PageInsertPosition;
 import com.wikispiv.bookmaker.enums.PageSide;
@@ -108,6 +109,13 @@ public class Main
     {
         getPrefs().getPages().get(getPrefs().getCurrentLeftPageIndex()).getDrawables()
                 .add(new IndexDrawable());
+        somethingChanged();
+    }
+
+    public void insertText(String text, String fontType)
+    {
+        getPrefs().getPages().get(getPrefs().getCurrentLeftPageIndex()).getDrawables()
+                .add(new TextLineDrawable(text, fontType));
         somethingChanged();
     }
 
@@ -213,7 +221,7 @@ public class Main
             Main.somethingChanged(false);
         }
     }
-    
+
     public void sendToBack()
     {
         Drawable selectedDrawable = getBmf().getEditPanel().getSelectedDrawable();
@@ -281,7 +289,7 @@ public class Main
         return saveHandler;
     }
 
-    public void setFont(String fontType)
+    public WSFont getFontByName(String fontType)
     {
         WSFont font = null;
         switch (fontType)
@@ -322,12 +330,11 @@ public class Main
             default:
                 throw new RuntimeException("Invalid font type: " + fontType);
         }
+        return font;
+    }
 
-        WSFont newFont = FontPicker.showFontPicker(getBmf(), font);
-        if (newFont != null) {
-            font = newFont;
-        }
-
+    public void setFontByName(String fontType, WSFont font)
+    {
         switch (fontType)
         {
             case "Instructions":
@@ -364,6 +371,18 @@ public class Main
                 getPrefs().setPageNumFont(font);
                 break;
         }
+    }
+
+    public void setFont(String fontType)
+    {
+        WSFont font = getFontByName(fontType);
+
+        WSFont newFont = FontPicker.showFontPicker(getBmf(), font);
+        if (newFont != null) {
+            font = newFont;
+        }
+
+        setFontByName(fontType, font);
         somethingChanged();
     }
 

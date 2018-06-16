@@ -417,6 +417,11 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
         });
 
         insertTextBtn.setText("Insert");
+        insertTextBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insertTextBtnActionPerformed(evt);
+            }
+        });
 
         onlyFittingCheckbox.setText("Only fitting");
         onlyFittingCheckbox.setToolTipText("Only show songs which will fit inside the preview thingy");
@@ -789,6 +794,10 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     private void toBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toBackBtnActionPerformed
         main.sendToBack();
     }//GEN-LAST:event_toBackBtnActionPerformed
+
+    private void insertTextBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertTextBtnActionPerformed
+        main.insertText(insertTextField.getText(), (String) fontComboBox.getSelectedItem());
+    }//GEN-LAST:event_insertTextBtnActionPerformed
 
     public void setFirstPageNum(int firstPageNum)
     {
