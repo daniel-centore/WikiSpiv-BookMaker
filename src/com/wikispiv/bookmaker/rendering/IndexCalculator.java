@@ -56,12 +56,14 @@ public class IndexCalculator
         private int pageIndex;
         private String title;
         private String mainTitle;
+        private String comparableTitle;
 
         public Entry(int page, String title, String mainTitle)
         {
             this.pageIndex = page;
             this.title = title;
             this.mainTitle = mainTitle;
+            this.comparableTitle = Utils.replaceNotIn(title.toUpperCase(), ORDER, '?');
         }
 
         public boolean isMainTitle()
@@ -92,9 +94,11 @@ public class IndexCalculator
         @Override
         public int compareTo(Entry o)
         {
-            String o1 = Utils.replaceNotIn(title.toUpperCase(), ORDER, '?');
-            String o2 = Utils.replaceNotIn(o.title.toUpperCase(), ORDER, '?');
-
+//            String o1 = Utils.replaceNotIn(title.toUpperCase(), ORDER, '?');
+//            String o2 = Utils.replaceNotIn(o.title.toUpperCase(), ORDER, '?');
+            String o1 = this.comparableTitle;
+            String o2 = o.comparableTitle;
+            
             int pos1 = 0;
             int pos2 = 0;
             for (int i = 0; i < Math.min(o1.length(), o2.length()) && pos1 == pos2; i++) {

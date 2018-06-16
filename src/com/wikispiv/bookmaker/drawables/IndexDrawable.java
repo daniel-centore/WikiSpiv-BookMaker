@@ -86,19 +86,21 @@ public class IndexDrawable extends ContinuableDrawable implements Serializable
             Rectangle2D pagenoBounds = drawString(currentLineFont, g2, pg, document, positionX, positionY, pageNum + "",
                     actuallyDraw, actuallyDrawPdf, Alignment.RIGHT_ALIGNED, getWidth(), editPanelSize);
 
-            int numPeriods;
-            for (numPeriods = 0;; ++numPeriods) {
-                String periods = String.join("", Collections.nCopies(numPeriods + 1, "."));
-                Rectangle2D titleBounds = drawString(currentLineFont, g2, pg, document, positionX, positionY,
-                        title + periods, false, false, Alignment.LEFT_ALIGNED, getWidth(), editPanelSize);
-                if (titleBounds.getMaxX() > pagenoBounds.getMinX()) {
-                    // Can't fit one more period!
-                    break;
+            int numPeriods = 0;
+            if (actuallyDraw || actuallyDrawPdf) {
+                for (numPeriods = 0;; ++numPeriods) {
+                    String periods = String.join("", Collections.nCopies(numPeriods + 1, "."));
+                    Rectangle2D titleBounds = drawString(currentLineFont, g2, pg, document, positionX, positionY,
+                            title + periods, false, false, Alignment.LEFT_ALIGNED, getWidth(), editPanelSize);
+                    if (titleBounds.getMaxX() > pagenoBounds.getMinX()) {
+                        // Can't fit one more period!
+                        break;
+                    }
                 }
+                String periods = String.join("", Collections.nCopies(numPeriods, "."));
+                drawString(currentLineFont, g2, pg, document, positionX, positionY, title + periods, actuallyDraw,
+                        actuallyDrawPdf, Alignment.LEFT_ALIGNED, getWidth(), editPanelSize);
             }
-            String periods = String.join("", Collections.nCopies(numPeriods, "."));
-            drawString(currentLineFont, g2, pg, document, positionX, positionY, title + periods, actuallyDraw,
-                    actuallyDrawPdf, Alignment.LEFT_ALIGNED, getWidth(), editPanelSize);
 
             positionY += pagenoBounds.getHeight();
             setLastRenderedChunk(entryId);
