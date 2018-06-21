@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 
 import com.wikispiv.bookmaker.rendering.ImageRepresentation;
@@ -74,6 +75,7 @@ public class ImageMonitor
         try {
             return ImageIO.read(file) != null;
         } catch (Exception e) {
+            Main.println(String.format("[%s]: %s", file.getName(), e.getMessage()));
             return false;
         }
     }
@@ -94,4 +96,3 @@ public class ImageMonitor
         return latestImagesList;
     }
 }
-

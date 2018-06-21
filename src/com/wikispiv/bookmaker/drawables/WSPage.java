@@ -104,7 +104,8 @@ public class WSPage implements Serializable
         g2.fillRect(0, 0, (int) prefs.getPageWidth(), (int) prefs.getPageHeight());
 
         g2.setColor(MARGIN_COLOR);
-        boolean spineIsRight = calcSpineIsRight();
+        int pageIndex = calcPageIndex();
+        boolean spineIsRight = isSpineRight(pageIndex);
         double marginLeft, marginRight;
         if (spineIsRight) {
             marginLeft = prefs.getPageMarginSideEdge();
@@ -125,7 +126,20 @@ public class WSPage implements Serializable
         g2.drawRect(0, 0, (int) prefs.getPageWidth(), (int) prefs.getPageHeight());
         g2.setStroke(oldStroke);
 
-        for (Drawable d : getDrawables()) {
+        List<Drawable> dbles = getDrawables();
+
+        // This is also in the pdf draw code!
+        boolean containsAnything = !dbles.stream()
+                .allMatch(d -> d instanceof PageNumDrawable || d instanceof PreviewDrawable);
+
+        for (Drawable d : dbles) {
+            if (d instanceof PageNumDrawable) {
+                if (!containsAnything) {
+                    // Only draw if the page has anything other than a page number
+                    continue;
+                }
+                ((PageNumDrawable) d).setPageNumber(pageIndex + prefs.getFirstPageNum());
+            }
             try {
                 d.drawMe(g2, editPanelSize, actuallyDraw, actuallyDrawPdf);
             } catch (IOException e) {
@@ -161,7 +175,20 @@ public class WSPage implements Serializable
     public void drawMe(PDPageContentStream contentStream, PDDocument document, boolean actuallyDraw,
             boolean actuallyDrawPdf) throws IOException
     {
-        for (Drawable d : getDrawables()) {
+        List<Drawable> dbles = getDrawables();
+        // This is also in the java draw code!
+        boolean containsAnything = !dbles.stream()
+                .allMatch(d -> d instanceof PageNumDrawable || d instanceof PreviewDrawable);
+        if (!containsAnything) {
+            // Only draw if there is anything on the page
+            return;
+        }
+        SpivanykPrefs prefs = Main.getPrefs();
+        int pageIndex = calcPageIndex();
+        for (Drawable d : dbles) {
+            if (d instanceof PageNumDrawable) {
+                ((PageNumDrawable) d).setPageNumber(pageIndex + prefs.getFirstPageNum());
+            }
             d.drawMe(contentStream, document, actuallyDraw, actuallyDrawPdf);
         }
     }
@@ -173,7 +200,8 @@ public class WSPage implements Serializable
         }
         int pageIndex = calcPageIndex();
         SpivanykPrefs prefs = Main.getPrefs();
-        PageNumDrawable correctPageNoDrawable = isSpineRight(pageIndex) ? prefs.getLeftPageNum() : prefs.getRightPageNum();
+        PageNumDrawable correctPageNoDrawable = isSpineRight(pageIndex) ? prefs.getLeftPageNum()
+                : prefs.getRightPageNum();
         if (!drawables.contains(correctPageNoDrawable)) {
             drawables.removeIf(d -> d instanceof PageNumDrawable);
             drawables.add(correctPageNoDrawable);

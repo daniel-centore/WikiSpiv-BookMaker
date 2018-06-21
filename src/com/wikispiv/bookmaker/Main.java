@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.wikipedia.Wiki;
 
+import com.wikispiv.bookmaker.data.Chunk;
+import com.wikispiv.bookmaker.data.Line;
 import com.wikispiv.bookmaker.data.Song;
+import com.wikispiv.bookmaker.data.Stanza;
 import com.wikispiv.bookmaker.drawables.AlignableDrawable;
 import com.wikispiv.bookmaker.drawables.Drawable;
 import com.wikispiv.bookmaker.drawables.ImageDrawable;
@@ -46,7 +50,7 @@ import com.wikispiv.bookmaker.ui.FontPicker;
 public class Main
 {
     // Hackily draw the page outline
-    public static final boolean DRAW_PAGE_OUTLINE = true;
+    public static final boolean DRAW_PAGE_OUTLINE = false;
 
     // Maximal rectangle https://gist.github.com/mmadson/9637974
     public static final String UKRAINIAN_PANGRAM = ""
@@ -103,6 +107,49 @@ public class Main
         // for (Entry entry : generateEntries) {
         // System.out.println(entry);
         // }
+        
+//        countChords();
+        
+        HashSet<Song> includedSongs = new HashSet<>();
+        for (WSPage p : getPrefs().getPages()) {
+            for (Drawable d : p.getDrawables()) {
+                if (d instanceof SongChunkDrawable) {
+                    includedSongs.add(((SongChunkDrawable) d).getSong());
+                }
+            }
+        }
+        Main.println("Total songs: " + includedSongs.size());
+    }
+    
+    private void countChords()
+    {
+        HashMap<String, Integer> chords = new HashMap<>();
+        for (Song song : getPrefs().getAllSongs()) {
+            for (Stanza stan : song.getStanzas()) {
+                for (Line line : stan.getLines()) {
+                    for (Chunk chunk : line.getChunks()) {
+                        String rawChord = chunk.getChord();
+                        if (rawChord == null) {
+                            continue;
+                        }
+                        rawChord = Utils.replaceNotIn(rawChord, "ABCDEFG#bdimsu7+/", ' ');
+                        String[] split = rawChord.split(" ");
+                        for (String chord : split) {
+                            if (!chord.isEmpty()) {
+                                if (!chords.containsKey(chord)) {
+                                    chords.put(chord, 0);
+                                }
+                                chords.put(chord, chords.get(chord) + 1);
+                            }
+                        }
+                       
+                    }
+                }
+            }
+        }
+        for (String key : chords.keySet()) {
+            Main.println(String.format("%s,%d", key, chords.get(key)));
+        }
     }
 
     public void indexBtnPushed()
