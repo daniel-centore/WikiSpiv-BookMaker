@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 
 import com.wikispiv.bookmaker.rendering.ImageRepresentation;

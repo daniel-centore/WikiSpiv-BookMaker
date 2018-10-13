@@ -1,21 +1,21 @@
 package com.wikispiv.bookmaker.ui;
 
-import com.sun.prism.paint.Color;
-import com.wikispiv.bookmaker.Main;
-import com.wikispiv.bookmaker.Utils;
-import com.wikispiv.bookmaker.rendering.WSFont;
 import java.awt.Frame;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+
+import com.wikispiv.bookmaker.Main;
+import com.wikispiv.bookmaker.Utils;
+import com.wikispiv.bookmaker.rendering.WSFont;
 
 /**
  * THIS FILE MUST BE EDITED IN NETBEANS
@@ -35,7 +35,6 @@ public class FontPicker extends javax.swing.JDialog {
         super(parent, true);
         initComponents();
         
-        File dir = WSFont.getFontDirectory();
         Collection<File> files = FileUtils.listFiles(WSFont.getFontDirectory(), new WildcardFileFilter("*.ttf"), null);
         List<String> fileNames = files.stream().map(f -> f.getName()).sorted().collect(Collectors.toList());
             

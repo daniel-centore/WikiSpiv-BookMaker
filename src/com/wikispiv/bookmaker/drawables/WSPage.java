@@ -9,7 +9,6 @@ import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -17,7 +16,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
 import com.wikispiv.bookmaker.Main;
 import com.wikispiv.bookmaker.SpivanykPrefs;
-import com.wikispiv.bookmaker.enums.Alignment;
 
 /**
  * Represents a single page in the spivanyk

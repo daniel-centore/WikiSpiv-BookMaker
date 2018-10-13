@@ -4,23 +4,20 @@ import java.awt.Cursor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 import com.wikispiv.bookmaker.Main;
-import com.wikispiv.bookmaker.SpivanykPrefs;
 import com.wikispiv.bookmaker.Utils;
 import com.wikispiv.bookmaker.drawables.AlignableDrawable;
 import com.wikispiv.bookmaker.drawables.Drawable;
 import com.wikispiv.bookmaker.drawables.SongChunkDrawable;
-import com.wikispiv.bookmaker.enums.Alignment;
 import com.wikispiv.bookmaker.enums.PageInsertPosition;
 import com.wikispiv.bookmaker.enums.PageSide;
 import com.wikispiv.bookmaker.tasks.ReloadSongs;
-import java.util.List;
-import javax.swing.JComboBox;
 
 /**
  * THIS FILE MUST BE EDITED IN NETBEANS
@@ -29,6 +26,7 @@ import javax.swing.JComboBox;
  */
 public class BookMakerFrame extends javax.swing.JFrame implements PropertyChangeListener
 {
+    private static final long serialVersionUID = 1L;
     private final Main main;
 
     public BookMakerFrame(Main main)
