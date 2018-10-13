@@ -63,7 +63,7 @@ public class IndexCalculator
             this.pageIndex = page;
             this.title = title;
             this.mainTitle = mainTitle;
-            this.comparableTitle = Utils.replaceNotIn(title.toUpperCase(), ORDER, '?');
+            this.comparableTitle = Utils.replaceNotIn(title.toUpperCase(), ORDER, "");
         }
 
         public boolean isMainTitle()
@@ -94,8 +94,6 @@ public class IndexCalculator
         @Override
         public int compareTo(Entry o)
         {
-//            String o1 = Utils.replaceNotIn(title.toUpperCase(), ORDER, '?');
-//            String o2 = Utils.replaceNotIn(o.title.toUpperCase(), ORDER, '?');
             String o1 = this.comparableTitle;
             String o2 = o.comparableTitle;
             

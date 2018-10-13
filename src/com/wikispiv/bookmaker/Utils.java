@@ -130,7 +130,7 @@ public class Utils
      * @param with What to replace the removed chars with
      * @return Text with any characters not in bag removed
      */
-    public static String replaceNotIn(String text, String bag, char with)
+    public static String replaceNotIn(String text, String bag, String with)
     {
         String result = "";
         for (char c : text.toCharArray()) {

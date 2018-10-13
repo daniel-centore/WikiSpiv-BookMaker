@@ -132,7 +132,7 @@ public class Main
                         if (rawChord == null) {
                             continue;
                         }
-                        rawChord = Utils.replaceNotIn(rawChord, "ABCDEFG#bdimsu7+/", ' ');
+                        rawChord = Utils.replaceNotIn(rawChord, "ABCDEFG#bdimsu7+/", " ");
                         String[] split = rawChord.split(" ");
                         for (String chord : split) {
                             if (!chord.isEmpty()) {
