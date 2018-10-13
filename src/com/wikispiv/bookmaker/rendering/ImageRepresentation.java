@@ -1,6 +1,8 @@
 package com.wikispiv.bookmaker.rendering;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.nio.file.Paths;
 
@@ -11,16 +13,33 @@ import com.wikispiv.bookmaker.Main;
 public class ImageRepresentation implements Comparable<ImageRepresentation>, Serializable
 {
     private static final long serialVersionUID = 1L;
-     
-    public File file;
+
+    /**
+     * @deprecated This locks us into a specific absolute path
+     */
+    private File file;
+    
+    private String folder;
+    private String filename;
 
     public ImageRepresentation(File file)
     {
-        this.file = file;
+        this.defileize(file);
     }
 
-    @Override
-    public String toString()
+    public File getFile()
+    {
+        File currentFile = Main.getSh().getCurrentFile();
+        if (currentFile == null || !currentFile.exists()) {
+            throw new RuntimeException("Why is the current file null??");
+        }
+        String s = FilenameUtils.concat(currentFile.getParent(), Main.IMG_DIRECTORY);
+        s = FilenameUtils.concat(s, folder);
+        s = FilenameUtils.concat(s, filename);
+        return new File(s);
+    }
+    
+    private void defileize(File file)
     {
         File currentFile = Main.getSh().getCurrentFile();
         if (currentFile == null || !currentFile.exists()) {
@@ -28,9 +47,25 @@ public class ImageRepresentation implements Comparable<ImageRepresentation>, Ser
         }
         String imagesPath = Paths.get(currentFile.getParent(), Main.IMG_DIRECTORY).toString();
         String trimPath = file.getAbsolutePath().substring(imagesPath.length() + 1);
-        String filename = FilenameUtils.getBaseName(trimPath);
-        String path = FilenameUtils.getFullPathNoEndSeparator(trimPath);
-        return String.format("%s (%s)", filename, path);
+        this.filename = FilenameUtils.getName(trimPath);
+        this.folder = FilenameUtils.getFullPathNoEndSeparator(trimPath);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+    {
+        in.defaultReadObject();
+        
+        // Upgrade from the deprecated format
+        if (this.file != null) {
+            defileize(this.file);
+            this.file = null;
+        }
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("%s (%s)", FilenameUtils.getBaseName(filename), folder);
     }
 
     @Override
@@ -38,7 +73,8 @@ public class ImageRepresentation implements Comparable<ImageRepresentation>, Ser
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((file == null) ? 0 : file.hashCode());
+        result = prime * result + ((filename == null) ? 0 : filename.hashCode());
+        result = prime * result + ((folder == null) ? 0 : folder.hashCode());
         return result;
     }
 
@@ -52,10 +88,15 @@ public class ImageRepresentation implements Comparable<ImageRepresentation>, Ser
         if (getClass() != obj.getClass())
             return false;
         ImageRepresentation other = (ImageRepresentation) obj;
-        if (file == null) {
-            if (other.file != null)
+        if (filename == null) {
+            if (other.filename != null)
                 return false;
-        } else if (!file.equals(other.file))
+        } else if (!filename.equals(other.filename))
+            return false;
+        if (folder == null) {
+            if (other.folder != null)
+                return false;
+        } else if (!folder.equals(other.folder))
             return false;
         return true;
     }

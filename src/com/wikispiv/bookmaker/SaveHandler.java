@@ -99,13 +99,13 @@ public class SaveHandler
         if (fileChooser.showOpenDialog(Main.getBmf()) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             try {
+                setCurrentFile(file);
                 FileInputStream fileIn = new FileInputStream(file);
                 ObjectInputStream in = new ObjectInputStream(fileIn);
                 this.prefs = (SpivanykPrefs) in.readObject();
                 this.prefs.initialize();
                 in.close();
                 fileIn.close();
-                setCurrentFile(file);
                 songListNeedsUpdating();
                 somethingChanged(false);
                 Main.getImageMonitor().monitor();

@@ -57,7 +57,7 @@ public class ImageDrawable extends Drawable implements Serializable
             return cachedPdfImage;
         }
         cachedPdfImage = PDImageXObject
-                .createFromFile(imageRep.file.getAbsolutePath(), document);
+                .createFromFile(imageRep.getFile().getAbsolutePath(), document);
         lastDocument = document;
         return cachedPdfImage;
     }
@@ -66,10 +66,10 @@ public class ImageDrawable extends Drawable implements Serializable
     {
         if (cachedJavaImage == null) {
             try {
-                this.cachedJavaImage = ImageIO.read(imageRep.file);
+                this.cachedJavaImage = ImageIO.read(imageRep.getFile());
             } catch (Exception e) {
                 // e.printStackTrace();
-                Main.println("Problem with image " + (imageRep == null ? "null" : imageRep.file.toString()));
+                Main.println("Problem with image " + (imageRep == null ? "null" : imageRep.getFile().toString()));
             }
         }
         return this.cachedJavaImage;
