@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class Song implements Serializable
 {
@@ -35,12 +36,14 @@ public final class Song implements Serializable
 
     public String getMainTitle()
     {
-        return mainTitle;
+        return Transliterator.transliterate(mainTitle, false);
     }
 
     public List<String> getAlternateTitles()
     {
-        return alternateTitles;
+        return alternateTitles.stream()
+                .map(t -> Transliterator.transliterate(t, false))
+                .collect(Collectors.toList());
     }
 
     public List<Stanza> getStanzas()
@@ -100,7 +103,7 @@ public final class Song implements Serializable
 
     public String getCredits()
     {
-        return credits;
+        return Transliterator.transliterate(credits, true);
     }
 
     public List<String> getCategories()

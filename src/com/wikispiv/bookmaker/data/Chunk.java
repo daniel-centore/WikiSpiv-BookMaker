@@ -22,6 +22,6 @@ public class Chunk implements Serializable
     
     public String getText()
     {
-        return text;
+        return Transliterator.transliterate(text, false);
     }
 }

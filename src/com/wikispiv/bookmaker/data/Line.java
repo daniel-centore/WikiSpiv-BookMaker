@@ -107,7 +107,7 @@ public class Line implements Serializable
 
     public String getLyricLine()
     {
-        return lyricLine;
+        return Transliterator.transliterate(lyricLine, lyricIsInstruction);
     }
 
     public boolean isIndented()
