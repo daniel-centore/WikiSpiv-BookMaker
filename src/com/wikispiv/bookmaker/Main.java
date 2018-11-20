@@ -231,6 +231,12 @@ public class Main
         // TODO: Undo/redo
         saveHandler.somethingChanged(shouldUndoStack);
     }
+    
+    public void transliterateChanged(boolean shouldTransliterate)
+    {
+        getPrefs().setShouldTransliterate(shouldTransliterate);
+        somethingChanged();
+    }
 
     public void firstPageNumChanged(int firstPageNum)
     {

@@ -15,6 +15,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
 import com.wikispiv.bookmaker.Main;
 import com.wikispiv.bookmaker.SpivanykPrefs;
+import com.wikispiv.bookmaker.data.Transliterator;
 import com.wikispiv.bookmaker.enums.Alignment;
 import com.wikispiv.bookmaker.rendering.IndexCalculator;
 import com.wikispiv.bookmaker.rendering.IndexCalculator.Entry;
@@ -112,7 +113,7 @@ public class IndexDrawable extends ContinuableDrawable implements Serializable
     public String getIndexTitle()
     {
         // TODO: Make this customizable
-        return "Зміст";
+        return Transliterator.transliterate("Зміст", true);
     }
 
     @Override

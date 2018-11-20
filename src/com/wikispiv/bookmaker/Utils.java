@@ -148,4 +148,14 @@ public class Utils
         Point cursorLocation = MouseInfo.getPointerInfo().getLocation();
         c.setLocation(cursorLocation);
     }
+    
+    public static boolean containsUkie(String s)
+    {
+        for (char c : s.toCharArray()) {
+            if (Character.UnicodeScript.of(c) == Character.UnicodeScript.CYRILLIC) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

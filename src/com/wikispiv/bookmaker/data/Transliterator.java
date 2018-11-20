@@ -2,17 +2,20 @@ package com.wikispiv.bookmaker.data;
 
 import java.util.HashMap;
 
+import com.wikispiv.bookmaker.Main;
+import com.wikispiv.bookmaker.Utils;
+
 public class Transliterator
 {
     private static HashMap<TranslitArgs, String> cache = new HashMap<>();
     
     public static String transliterate(String s, boolean translate)
     {
-//        if (s!= null) {
-//            return s;
-//        }
         if (s == null) {
             return null;
+        }
+        if (!Main.getPrefs().getShouldTransliterate()) {
+            return s;
         }
         
         TranslitArgs ta = new TranslitArgs(s, translate);
@@ -33,6 +36,10 @@ public class Transliterator
             s = replacePreserveCase(s, "Народні", "Folk");
             s = replacePreserveCase(s, "Невідомий", "Unknown");
             s = replacePreserveCase(s, "Обробка", "Arrangement");
+            s = replacePreserveCase(s, "Переклад", "Translation");
+            s = replacePreserveCase(s, "Зміст", "Index");
+            s = s.replace("о.", "Fr.");
+            s = s.replace("О.", "Fr.");
         }
         
         // Special WikiSpiv exceptions
@@ -60,8 +67,11 @@ public class Transliterator
         s = replacePreserveCase(s, "ЬО", "YO");
         s = replacePreserveCase(s, "ИЙ", "IY");
 
-        // UNT Simplified
-        s = replacePreserveCase(s, "'", "");
+        // UNT Simplified (only do this if we're confident we're inside ukie text,
+        //                 to preserve in English contractions and such)
+        if (Utils.containsUkie(s)) {
+            s = replacePreserveCase(s, "'", "");
+        }
 
         // BGN/PCGN
         s = replacePreserveCase(s, "Ь", "'");

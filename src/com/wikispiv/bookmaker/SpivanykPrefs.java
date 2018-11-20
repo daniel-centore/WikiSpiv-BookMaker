@@ -52,6 +52,7 @@ public class SpivanykPrefs implements Serializable
     private int firstPageNum;
     private PageNumDrawable leftPageNum;
     private PageNumDrawable rightPageNum;
+    private boolean shouldTransliterate;
 
     public SpivanykPrefs()
     {
@@ -552,6 +553,16 @@ public class SpivanykPrefs implements Serializable
             rightPageNum = new PageNumDrawable(Alignment.RIGHT_ALIGNED);
         }
         return rightPageNum;
+    }
+
+    public boolean getShouldTransliterate()
+    {
+        return shouldTransliterate;
+    }
+
+    public void setShouldTransliterate(boolean shouldTransliterate)
+    {
+        this.shouldTransliterate = shouldTransliterate;
     }
 
 }

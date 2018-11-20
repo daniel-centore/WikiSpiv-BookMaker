@@ -54,6 +54,7 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
         editPanel.setEnabled(!yes);
         saveBtn.setEnabled(!yes);
         openBtn.setEnabled(!yes);
+        transliterateCheckbox.setEnabled(!yes);
         
         if (yes) {
             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -160,6 +161,7 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
         onlyFittingCheckbox = new javax.swing.JCheckBox();
         indexBtn = new javax.swing.JButton();
         toBackBtn = new javax.swing.JButton();
+        transliterateCheckbox = new javax.swing.JCheckBox();
 
         jButton4.setText("jButton4");
 
@@ -443,6 +445,13 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
             }
         });
 
+        transliterateCheckbox.setText("D/Д");
+        transliterateCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transliterateCheckboxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -516,7 +525,8 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
                                     .addComponent(jLabel10)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(titleAlignCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(transliterateCheckbox))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -597,7 +607,9 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(titleAlignCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel10)))
+                                    .addComponent(jLabel10))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(transliterateCheckbox))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel7)
@@ -797,6 +809,10 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
         main.insertText(insertTextField.getText(), (String) fontComboBox.getSelectedItem());
     }//GEN-LAST:event_insertTextBtnActionPerformed
 
+    private void transliterateCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transliterateCheckboxActionPerformed
+        main.transliterateChanged(transliterateCheckbox.isSelected());
+    }//GEN-LAST:event_transliterateCheckboxActionPerformed
+
     public void setFirstPageNum(int firstPageNum)
     {
         if (firstPageNum != (int) Utils.getDoubleValue(firstPageSpinner)) {
@@ -808,6 +824,13 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     {
         if (onlyFitting != onlyFittingCheckbox.isSelected()) {
             onlyFittingCheckbox.setSelected(onlyFitting);
+        }
+    }
+    
+    public void setTransliterateCheckbox(boolean translit)
+    {
+        if (translit != transliterateCheckbox.isSelected()) {
+            transliterateCheckbox.setSelected(translit);
         }
     }
     
@@ -915,6 +938,7 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     private javax.swing.JList<String> sourceSongList;
     private javax.swing.JComboBox<String> titleAlignCombo;
     private javax.swing.JButton toBackBtn;
+    private javax.swing.JCheckBox transliterateCheckbox;
     // End of variables declaration//GEN-END:variables
 
     public javax.swing.JList<String> getIncompleteSongList()

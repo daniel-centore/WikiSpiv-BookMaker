@@ -226,6 +226,7 @@ public class SaveHandler
 
         // Other checkboxes
         bmf.setOnlyFittingCheckbox(prefs.isShowOnlyFitting());
+        bmf.setTransliterateCheckbox(prefs.getShouldTransliterate());
     }
 
     private void setCurrentFile(File file)
