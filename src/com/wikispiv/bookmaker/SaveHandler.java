@@ -223,6 +223,7 @@ public class SaveHandler
         bmf.setIndentSizeSpinner(prefs.getIndentSize());
         bmf.setBeforeLyricsSpinner(prefs.getBeforeLyrics());
         bmf.setFirstPageNum(prefs.getFirstPageNum());
+        bmf.setPageSizeSpinners(prefs.getPageSize());
 
         // Other checkboxes
         bmf.setOnlyFittingCheckbox(prefs.isShowOnlyFitting());

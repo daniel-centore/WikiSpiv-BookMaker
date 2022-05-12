@@ -6,6 +6,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.wikispiv.bookmaker.Main;
+import com.wikispiv.bookmaker.SpivanykPrefs;
+import com.wikispiv.bookmaker.drawables.Drawable;
+import com.wikispiv.bookmaker.drawables.SongChunkDrawable;
+import com.wikispiv.bookmaker.drawables.WSPage;
+import com.wikispiv.bookmaker.rendering.IndexCalculator.Entry;
+
 public final class Song implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -51,6 +58,7 @@ public final class Song implements Serializable
         return stanzas;
     }
 
+    // Please keep this function in sync with the App's JS version!!!
     private List<Stanza> makeStanzas(String content)
     {
         if (!content.endsWith("\n")) {
@@ -109,5 +117,25 @@ public final class Song implements Serializable
     public List<String> getCategories()
     {
         return categories;
+    }
+    
+    public int getPageIndex()
+    {
+        SpivanykPrefs prefs = Main.getPrefs();
+        for (int i = 0; i < prefs.getPages().size(); ++i) {
+            WSPage page = prefs.getPages().get(i);
+            for (Drawable d : page.getDrawables()) {
+                if (d instanceof SongChunkDrawable) {
+                    SongChunkDrawable scd = (SongChunkDrawable) d;
+                    if (scd.shouldRenderTitle()) {
+                        Song s = scd.getSong();
+                        if (s.equals(this)) {
+                            return i;
+                        }
+                    }
+                }
+            }
+        }
+        return -1;
     }
 }

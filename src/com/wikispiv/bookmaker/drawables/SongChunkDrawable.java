@@ -153,12 +153,25 @@ public class SongChunkDrawable extends ContinuableDrawable implements Serializab
                 double chordHeight = chordFont.getLineHeight();
                 double maxHeight = 0;
                 double totalLineWidth = 0;
-                for (Chunk c : chunks) {
+                for (int i = 0; i < chunks.size(); ++i) {
+                    Chunk c = chunks.get(i);
+                    Chunk nextChunk = i + 1 < chunks.size() ? chunks.get(i + 1) : null;
                     Rectangle2D chordRect = drawString(chordFont, g2, pg, document, chunkX, y, c.getChord() + " ",
                             actuallyDraw, actuallyDrawPdf, Alignment.LEFT_ALIGNED, 0, editPanelSize);
                     Rectangle2D lineRect = drawString(textFont, g2, pg, document, chunkX, y + chordHeight, c.getText(),
                             actuallyDraw, actuallyDrawPdf, Alignment.LEFT_ALIGNED, 0, editPanelSize);
-                    double chunkWidth = Math.max(chordRect.getWidth(), lineRect.getWidth());
+                    double kerningAdjustment = 0;
+                    if (nextChunk != null) {
+                        Rectangle2D nextChunkRect = drawString(textFont, g2, pg, document, 0, 0,
+                                nextChunk.getText(), false, false, Alignment.LEFT_ALIGNED, 0, editPanelSize);
+                        Rectangle2D lineWithNextChunkRect = drawString(textFont, g2, pg, document, 0, 0,
+                                c.getText() + nextChunk.getText(),
+                                false, false, Alignment.LEFT_ALIGNED, 0, editPanelSize);
+                        kerningAdjustment = lineWithNextChunkRect.getWidth()
+                                - (nextChunkRect.getWidth() + lineRect.getWidth());
+                    }
+
+                    double chunkWidth = Math.max(chordRect.getWidth(), lineRect.getWidth() + kerningAdjustment);
                     chunkX += chunkWidth;
                     totalLineWidth += chunkWidth;
                     maxHeight = Math.max(maxHeight, lineRect.getMaxY() - chordRect.getMinY());

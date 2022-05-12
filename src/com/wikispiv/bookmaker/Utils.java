@@ -158,4 +158,16 @@ public class Utils
         }
         return false;
     }
+    
+    public static float spinnerToFloat(Object o) {
+        if (o instanceof Double) {
+            return ((Double) o).floatValue();
+        } else if (o instanceof Integer) {
+            return ((Integer) o).floatValue();
+        } else if (o instanceof Number) {
+            return ((Number) o).floatValue();
+        } else {
+            return Float.parseFloat(o.toString());
+        }
+    }
 }

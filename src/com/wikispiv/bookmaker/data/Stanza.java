@@ -17,6 +17,7 @@ public final class Stanza implements Serializable
         this.lines = makeLines(rawContent);
     }
 
+    // Please keep this function in sync with the App's JS version!!!
     private List<Line> makeLines(String rawContent)
     {
         List<Line> result = new ArrayList<>();

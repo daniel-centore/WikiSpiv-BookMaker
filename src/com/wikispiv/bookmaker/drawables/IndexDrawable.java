@@ -27,7 +27,8 @@ import com.wikispiv.bookmaker.rendering.WSFont;
  * TODO: Offer some sort of warning if the last element of the index is not
  * rendered
  * 
- * TODO: Offer some sort of warning if an index chunk is empty, like on the song one
+ * TODO: Offer some sort of warning if an index chunk is empty, like on the song
+ * one
  * 
  * @author Daniel Centore
  *
@@ -35,6 +36,7 @@ import com.wikispiv.bookmaker.rendering.WSFont;
 public class IndexDrawable extends ContinuableDrawable implements Serializable
 {
     private static final long serialVersionUID = 1L;
+    public static final String ALPHABET_ORDER = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЮЯ";
 
     @Override
     public int getNumberChunks()
@@ -63,6 +65,8 @@ public class IndexDrawable extends ContinuableDrawable implements Serializable
         WSFont indexTitleFont = prefs.getIndexTitleFont();
         WSFont indexFont = prefs.getIndexFont();
         WSFont indexAltFont = prefs.getIndexAltFont();
+        WSFont indexAlphFont = prefs.getIndexAlphabetFont();
+        WSFont indexAlphBoldFont = prefs.getIndexAlphabetHighlightFont();
         if (renderTitle) {
             positionY = getY() + indexTitleFont.getFontSize();
             Rectangle2D titleRect = drawString(indexTitleFont, g2, pg, document, getX(), positionY, getIndexTitle(),
@@ -71,9 +75,15 @@ public class IndexDrawable extends ContinuableDrawable implements Serializable
         }
 
         // Draw entries
+        int lastRenderedEntry = firstRenderedEntry;
         for (int entryId = firstRenderedEntry; entryId < entries.size(); ++entryId) {
             Entry entry = entries.get(entryId);
 
+            // boolean appendMainTitle = !entry.isMainTitle() &&
+            // !entry.getTitle().contains("(")
+            // && !entry.getTitle().contains(")");
+            // String title = entry.getTitle() + (appendMainTitle ? " (" +
+            // entry.getMainTitle() + ")" : "");
             String title = entry.getTitle();
             int pageNum = entry.getPage() + prefs.getFirstPageNum();
             WSFont currentLineFont = entry.isMainTitle() ? indexFont : indexAltFont;
@@ -105,8 +115,56 @@ public class IndexDrawable extends ContinuableDrawable implements Serializable
 
             positionY += pagenoBounds.getHeight();
             setLastRenderedChunk(entryId);
+            lastRenderedEntry = entryId;
         }
+        
+        if (firstRenderedEntry < entries.size()) {
+            // == Render the Alphabet == //
+            positionY += indexFont.getLineHeight();
 
+            char firstLetter = entries.get(firstRenderedEntry).getTitle().charAt(0);
+            char lastLetter = entries.get(lastRenderedEntry).getTitle().charAt(0);
+
+            int firstLetterIdx = ALPHABET_ORDER.indexOf(firstLetter);
+            int lastLetterIdx = ALPHABET_ORDER.indexOf(lastLetter);
+            lastLetterIdx = lastLetterIdx >= 0 ? lastLetterIdx : ALPHABET_ORDER.length() - 1;
+
+            String firstChars = firstLetterIdx < 0 ? ALPHABET_ORDER : ALPHABET_ORDER.substring(0, firstLetterIdx);
+            String middleChars = firstLetterIdx < 0 ? "" : ALPHABET_ORDER.substring(firstLetterIdx, lastLetterIdx + 1);
+            String endChars = firstLetterIdx < 0 ? ""
+                    : ALPHABET_ORDER.substring(Math.min(lastLetterIdx + 1, ALPHABET_ORDER.length()));
+
+            // Kerning hack to keep the sections from being too close. I'm being lazy
+            double spaceWidthKludge = indexAlphFont.getWidth(document, " ") / 3;
+            
+            double firstWidth = indexAlphFont.getWidth(document, firstChars) + spaceWidthKludge;
+            double middleWidth = indexAlphBoldFont.getWidth(document, middleChars) + spaceWidthKludge;
+            double endWidth = indexAlphFont.getWidth(document, endChars);
+            double totalAlphWidth = firstWidth + middleWidth + endWidth;
+
+            double startX = positionX + getWidth() / 2 - totalAlphWidth / 2;
+
+            drawString(
+                    indexAlphFont,
+                    g2, pg, document,
+                    startX,
+                    positionY,
+                    firstChars,
+                    actuallyDraw,
+                    actuallyDrawPdf,
+                    Alignment.LEFT_ALIGNED,
+                    getWidth(),
+                    editPanelSize);
+            drawString(indexAlphBoldFont, g2, pg, document, startX + firstWidth, positionY,
+                    middleChars,
+                    actuallyDraw,
+                    actuallyDrawPdf,
+                    Alignment.LEFT_ALIGNED, getWidth(), editPanelSize);
+            drawString(indexAlphFont, g2, pg, document, startX + firstWidth + middleWidth, positionY,
+                    endChars,
+                    actuallyDraw, actuallyDrawPdf,
+                    Alignment.LEFT_ALIGNED, getWidth(), editPanelSize);
+        }
         g2.setFont(oldFont);
     }
 

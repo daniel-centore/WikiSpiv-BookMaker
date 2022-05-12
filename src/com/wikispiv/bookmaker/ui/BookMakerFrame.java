@@ -1,6 +1,7 @@
 package com.wikispiv.bookmaker.ui;
 
 import java.awt.Cursor;
+import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -9,6 +10,8 @@ import javax.swing.JList;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 
 import com.wikispiv.bookmaker.Main;
 import com.wikispiv.bookmaker.Utils;
@@ -162,6 +165,11 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
         indexBtn = new javax.swing.JButton();
         toBackBtn = new javax.swing.JButton();
         transliterateCheckbox = new javax.swing.JCheckBox();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        widthSpinner = new javax.swing.JSpinner();
+        heightSpinner = new javax.swing.JSpinner();
+        jLabel15 = new javax.swing.JLabel();
 
         jButton4.setText("jButton4");
 
@@ -371,7 +379,7 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
 
         jLabel10.setText("Title:");
 
-        fontComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Title", "Credits", "Chords", "Lyrics", "Instructions", "Cat Title", "Cat Subtitle", "Index Title", "Index", "Index Alt", "Page Num" }));
+        fontComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Title", "Credits", "Chords", "Lyrics", "Instructions", "Cat Title", "Cat Subtitle", "Index Title", "Index", "Index Alt", "Page Num", "Idx Alph", "Idx Alph Bold" }));
 
         setFontBtn.setText("Set Font");
         setFontBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -451,6 +459,24 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
                 transliterateCheckboxActionPerformed(evt);
             }
         });
+
+        jLabel13.setText("width:");
+
+        jLabel14.setText("height:");
+
+        widthSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                widthSpinnerStateChanged(evt);
+            }
+        });
+
+        heightSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                heightSpinnerStateChanged(evt);
+            }
+        });
+
+        jLabel15.setText("mm");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -541,16 +567,34 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(saveAsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(openBtn)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(exportBtn)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(reloadSongsButton))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(jLabel12)
-                                    .addGap(100, 100, 100))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addComponent(saveAsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(openBtn)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel12)
+                                            .addGap(114, 114, 114)))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(exportBtn)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(reloadSongsButton))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(jLabel14)
+                                                    .addGap(13, 13, 13))
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                    .addComponent(jLabel13)
+                                                    .addGap(18, 18, 18)))
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(widthSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(jLabel15))
+                                                .addComponent(heightSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                 .addComponent(savePreviewBtn))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(kapustaBtn)
@@ -564,7 +608,7 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
                         .addComponent(addPageL, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(72, 72, 72)
                         .addComponent(deleteLeftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 717, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 709, Short.MAX_VALUE)
                         .addComponent(jumpRightBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(editPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -603,14 +647,6 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(titleAlignCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel10))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(transliterateCheckbox))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel7)
                                     .addComponent(filterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -637,15 +673,35 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
                                 .addGap(2, 2, 2)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel4)
-                                    .addComponent(indentSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(indentSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel12)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(titleAlignCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(transliterateCheckbox)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel13)
+                                .addComponent(widthSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel15)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(kapustaBtn)
-                                    .addComponent(indexBtn))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(11, 11, 11)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(kapustaBtn)
+                                            .addComponent(indexBtn)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel14)
+                                            .addComponent(heightSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jButton2)
@@ -666,7 +722,7 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
                             .addComponent(saveAsBtn))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(editPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -813,6 +869,22 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
         main.transliterateChanged(transliterateCheckbox.isSelected());
     }//GEN-LAST:event_transliterateCheckboxActionPerformed
 
+    private void widthSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_widthSpinnerStateChanged
+        Main.getPrefs().setPageSize(Utils.rectFromPd(
+                new PDRectangle(
+                        Utils.spinnerToFloat(widthSpinner.getValue()),
+                        (float) Main.getPrefs().getPageHeight())));
+        Main.somethingChanged();
+    }//GEN-LAST:event_widthSpinnerStateChanged
+
+    private void heightSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_heightSpinnerStateChanged
+        Main.getPrefs().setPageSize(Utils.rectFromPd(
+                new PDRectangle(
+                        (float) (double) (Double) Main.getPrefs().getPageWidth(),
+                        Utils.spinnerToFloat(heightSpinner.getValue()))));
+        Main.somethingChanged();
+    }//GEN-LAST:event_heightSpinnerStateChanged
+
     public void setFirstPageNum(int firstPageNum)
     {
         if (firstPageNum != (int) Utils.getDoubleValue(firstPageSpinner)) {
@@ -837,6 +909,12 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     public JComboBox<String> getFilterSource()
     {
         return filterSource;
+    }
+    
+    public void setPageSizeSpinners(Rectangle2D val)
+    {
+        widthSpinner.setValue(val.getWidth());
+        heightSpinner.setValue(val.getHeight());
     }
     
     public void setIndentSizeSpinner(double val)
@@ -897,6 +975,7 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     private javax.swing.JTextField filterTextField;
     private javax.swing.JSpinner firstPageSpinner;
     private javax.swing.JComboBox<String> fontComboBox;
+    private javax.swing.JSpinner heightSpinner;
     private javax.swing.JList<String> imageList;
     private javax.swing.JList<String> incompleteSongList;
     private javax.swing.JSpinner indentSizeSpinner;
@@ -910,6 +989,9 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -939,6 +1021,7 @@ public class BookMakerFrame extends javax.swing.JFrame implements PropertyChange
     private javax.swing.JComboBox<String> titleAlignCombo;
     private javax.swing.JButton toBackBtn;
     private javax.swing.JCheckBox transliterateCheckbox;
+    private javax.swing.JSpinner widthSpinner;
     // End of variables declaration//GEN-END:variables
 
     public javax.swing.JList<String> getIncompleteSongList()

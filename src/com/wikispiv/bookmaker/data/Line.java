@@ -26,6 +26,7 @@ public class Line implements Serializable
         this.lyricIsInstruction = lyricIsInstruction;
     }
 
+    // Please keep this function in sync with the App's JS version!!!
     public List<Chunk> getChunks()
     {
         if (chunks == null) {
@@ -42,6 +43,7 @@ public class Line implements Serializable
         return chunks;
     }
 
+    // Please keep this function in sync with the App's JS version!!!
     // NOTE: This algorithm is a translation of Spiv.class.php/smush()
     private List<Chunk> smush()
     {

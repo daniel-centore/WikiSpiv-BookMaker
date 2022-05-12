@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -98,6 +99,13 @@ public class Main
 
     public void kapusta()
     {
+        List<Song> unusedSongs = new ArrayList<>(getPrefs().getAllSongs());
+        unusedSongs.removeAll(getPrefs().findUsedSongs());
+
+        for (Song s : unusedSongs) {
+            Main.println("* [[" + s.getMainTitle() + "]]");
+        }
+        // getPrefs().findUsedSongs()
         // getPrefs().getPages().get(getPrefs().getCurrentLeftPageIndex()).getDrawables()
         // .add(new ImageDrawable("Deer.jpg"));
         // somethingChanged();
@@ -107,9 +115,9 @@ public class Main
         // for (Entry entry : generateEntries) {
         // System.out.println(entry);
         // }
-        
-//        countChords();
-        
+
+        // countChords();
+
         HashSet<Song> includedSongs = new HashSet<>();
         for (WSPage p : getPrefs().getPages()) {
             for (Drawable d : p.getDrawables()) {
@@ -118,9 +126,9 @@ public class Main
                 }
             }
         }
-        Main.println("Total songs: " + includedSongs.size());
+        Main.println("Total songs included: " + includedSongs.size());
     }
-    
+
     private void countChords()
     {
         HashMap<String, Integer> chords = new HashMap<>();
@@ -142,7 +150,7 @@ public class Main
                                 chords.put(chord, chords.get(chord) + 1);
                             }
                         }
-                       
+
                     }
                 }
             }
@@ -231,7 +239,7 @@ public class Main
         // TODO: Undo/redo
         saveHandler.somethingChanged(shouldUndoStack);
     }
-    
+
     public void transliterateChanged(boolean shouldTransliterate)
     {
         getPrefs().setShouldTransliterate(shouldTransliterate);
@@ -257,6 +265,10 @@ public class Main
     {
         Song s = getPrefs().getSong(songTitle);
         if (s != null) {
+            int page = s.getPageIndex();
+            if (page >= 0) {
+                Main.println("Page Index: " + page);
+            }
             SongChunkDrawable songChunkDrawable = new SongChunkDrawable(s);
             getPrefs().getPreviewDrawable().setPreview(songChunkDrawable);
             Main.somethingChanged(false);
@@ -380,6 +392,12 @@ public class Main
             case "Page Num":
                 font = getPrefs().getPageNumFont();
                 break;
+            case "Idx Alph":
+                font = getPrefs().getIndexAlphabetFont();
+                break;
+            case "Idx Alph Bold":
+                font = getPrefs().getIndexAlphabetHighlightFont();
+                break;
             default:
                 throw new RuntimeException("Invalid font type: " + fontType);
         }
@@ -422,6 +440,12 @@ public class Main
                 break;
             case "Page Num":
                 getPrefs().setPageNumFont(font);
+                break;
+            case "Idx Alph":
+                getPrefs().setIndexAlphabetFont(font);
+                break;
+            case "Idx Alph Bold":
+                getPrefs().setIndexAlphabetHighlightFont(font);
                 break;
         }
     }
@@ -522,6 +546,7 @@ public class Main
         // Category:Пісні
         List<Song> allSongs;
         HashSet<String> allCategories = new HashSet<>();
+        // XXX: parallelStream is faster, use stream to debug
         allSongs = allSongNames.parallelStream().map(songName -> {
             Main.println("Fetching " + songName + "...");
             try {
@@ -529,6 +554,10 @@ public class Main
                 categories = categories.stream().map(s -> s.replaceFirst("Category:", "")).collect(Collectors.toList());
                 allCategories.addAll(categories);
                 String rawContent = wiki.getSectionText(songName, 0);
+                if (rawContent == null || !rawContent.contains("<spiv>")) {
+                    Main.println("    Skipping empty " + songName + ".");
+                    return null;
+                }
                 String credits = between(rawContent, "credits");
                 String spiv = trimBlankLinesStartAndTail(between(rawContent, "spiv"));
                 String[] redirects = wiki.whatLinksHere(songName, true);
@@ -542,12 +571,21 @@ public class Main
                 reloadProgress++;
                 int percent = reloadProgress * 100 / allSongNames.size();
                 reloadSongs.setMyProgress(percent);
+                Main.println("    Finished " + songName + ".");
                 return song;
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
             }
-        }).collect(Collectors.toList());
+        }).filter(x -> x != null).collect(Collectors.toList());
+        allSongs.sort(new Comparator<Song>()
+        {
+            @Override
+            public int compare(Song o1, Song o2)
+            {
+                return o1.getMainTitle().compareTo(o2.getMainTitle());
+            }
+        });
         reloadSongs.setMyProgress(100);
         Main.println("Done fetching songs! :)");
         getPrefs().setAllSongs(allSongs);

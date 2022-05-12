@@ -1,6 +1,5 @@
 package com.wikispiv.bookmaker;
 
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class SpivanykPrefs implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private Rectangle2D pageSize; // TODO Customizable
+    private Rectangle2D pageSize;
     private List<Song> allSongs;
     private List<WSPage> pages;
     private int currentLeftPageIndex;
@@ -43,6 +42,8 @@ public class SpivanykPrefs implements Serializable
     private WSFont indexFont;
     private WSFont indexAltFont;
     private WSFont pageNumFont; // Page Num
+    private WSFont indexAlphabetFont;
+    private WSFont indexAlphabetHighlightFont;
     private double indentSize = 6;
     private double beforeLyrics = 4;
     private PreviewDrawable previewDrawable;
@@ -66,6 +67,9 @@ public class SpivanykPrefs implements Serializable
         }
         if (this.pages == null) {
             this.pages = new ArrayList<>();
+        }
+        if (this.pageSize == null) {
+            this.pageSize = Utils.rectFromPd(Main.SIZE_LETTER);
         }
     }
 
@@ -138,11 +142,10 @@ public class SpivanykPrefs implements Serializable
 
     public Rectangle2D getPageSize()
     {
-        pageSize = Utils.rectFromPd(Main.SIZE_A5);
         return pageSize;
     }
 
-    public void setPageSize(Rectangle pageSize)
+    public void setPageSize(Rectangle2D pageSize)
     {
         this.pageSize = pageSize;
     }
@@ -563,6 +566,32 @@ public class SpivanykPrefs implements Serializable
     public void setShouldTransliterate(boolean shouldTransliterate)
     {
         this.shouldTransliterate = shouldTransliterate;
+    }
+
+    public WSFont getIndexAlphabetFont()
+    {
+        if (indexAlphabetFont == null) {
+            return Main.DEFAULT_FONT;
+        }
+        return indexAlphabetFont;
+    }
+
+    public void setIndexAlphabetFont(WSFont indexAlphabetFont)
+    {
+        this.indexAlphabetFont = indexAlphabetFont;
+    }
+
+    public WSFont getIndexAlphabetHighlightFont()
+    {
+        if (indexAlphabetHighlightFont == null) {
+            return Main.DEFAULT_FONT;
+        }
+        return indexAlphabetHighlightFont;
+    }
+
+    public void setIndexAlphabetHighlightFont(WSFont indexAlphabetHighlightFont)
+    {
+        this.indexAlphabetHighlightFont = indexAlphabetHighlightFont;
     }
 
 }
