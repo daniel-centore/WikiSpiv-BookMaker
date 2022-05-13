@@ -153,28 +153,39 @@ public class SongChunkDrawable extends ContinuableDrawable implements Serializab
                 double chordHeight = chordFont.getLineHeight();
                 double maxHeight = 0;
                 double totalLineWidth = 0;
-                for (int i = 0; i < chunks.size(); ++i) {
+
+                boolean anyChordsWiderThanText = false;
+                // We don't care about the last chunk because nothing after it will be affected
+                for (int i = 0; i < chunks.size() - 1; ++i) {
                     Chunk c = chunks.get(i);
-                    Chunk nextChunk = i + 1 < chunks.size() ? chunks.get(i + 1) : null;
+                    if (chordFont.getWidth(document, c.getChord()) > textFont.getWidth(document, c.getText())) {
+                        anyChordsWiderThanText = true;
+                        break;
+                    }
+                }
+
+                if (!anyChordsWiderThanText) {
+                    // Just drop the whole line down and place only the chords
+                    drawString(textFont, g2, pg, document, x + extraX, y + chordHeight, l.getLyricLine(), actuallyDraw,
+                            actuallyDrawPdf, Alignment.LEFT_ALIGNED, 0, editPanelSize);
+                }
+
+                for (Chunk c : chunks) {
                     Rectangle2D chordRect = drawString(chordFont, g2, pg, document, chunkX, y, c.getChord() + " ",
                             actuallyDraw, actuallyDrawPdf, Alignment.LEFT_ALIGNED, 0, editPanelSize);
-                    Rectangle2D lineRect = drawString(textFont, g2, pg, document, chunkX, y + chordHeight, c.getText(),
-                            actuallyDraw, actuallyDrawPdf, Alignment.LEFT_ALIGNED, 0, editPanelSize);
-                    double kerningAdjustment = 0;
-                    if (nextChunk != null) {
-                        Rectangle2D nextChunkRect = drawString(textFont, g2, pg, document, 0, 0,
-                                nextChunk.getText(), false, false, Alignment.LEFT_ALIGNED, 0, editPanelSize);
-                        Rectangle2D lineWithNextChunkRect = drawString(textFont, g2, pg, document, 0, 0,
-                                c.getText() + nextChunk.getText(),
-                                false, false, Alignment.LEFT_ALIGNED, 0, editPanelSize);
-                        kerningAdjustment = lineWithNextChunkRect.getWidth()
-                                - (nextChunkRect.getWidth() + lineRect.getWidth());
-                    }
+                    Rectangle2D chunkLineRect = drawString(textFont, g2, pg, document,
+                            chunkX, y + chordHeight,
+                            c.getText(),
+                            anyChordsWiderThanText ? actuallyDraw : false,
+                            anyChordsWiderThanText ? actuallyDrawPdf : false,
+                            Alignment.LEFT_ALIGNED, 0, editPanelSize);
 
-                    double chunkWidth = Math.max(chordRect.getWidth(), lineRect.getWidth() + kerningAdjustment);
+                    double chunkWidth = anyChordsWiderThanText
+                            ? Math.max(chordRect.getWidth(), chunkLineRect.getWidth())
+                            : chunkLineRect.getWidth();
                     chunkX += chunkWidth;
                     totalLineWidth += chunkWidth;
-                    maxHeight = Math.max(maxHeight, lineRect.getMaxY() - chordRect.getMinY());
+                    maxHeight = Math.max(maxHeight, chunkLineRect.getMaxY() - chordRect.getMinY());
                 }
                 height += maxHeight;
                 y += maxHeight;
