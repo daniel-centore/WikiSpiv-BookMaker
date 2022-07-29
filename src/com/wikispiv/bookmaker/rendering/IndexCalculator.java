@@ -51,7 +51,7 @@ public class IndexCalculator
 
     public class Entry implements Comparable<Entry>
     {
-        public static final String ORDER = " -АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЮЯЬABCDEFGHIJKLMNOPQRSTUVWXYZ?";
+        public static final String ORDER = " -АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЮЯЬABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?";
 
         private int pageIndex;
         private String title;
