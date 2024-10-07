@@ -39,11 +39,11 @@ public class ImageMonitor
         Path directoryToWatch = Paths.get(currentFile.getParent(), Main.IMG_DIRECTORY);
         try {
             // Watch the directory for changes recursively
-            this.watcher = DirectoryWatcher.create(directoryToWatch, event -> {
+            this.watcher = DirectoryWatcher.builder().path(directoryToWatch).listener(event -> {
                 // In principle we could speed this up by using the event to check what actually
                 // changed, but ¯\_(ツ)_/¯
                 directoryChanged();
-            });
+            }).build();
             this.watcher.watchAsync();
             directoryChanged(); // Initial setup
         } catch (IOException e) {
