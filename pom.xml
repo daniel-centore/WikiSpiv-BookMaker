@@ -54,7 +54,7 @@
 		<dependency>
 			<groupId>io.methvin</groupId>
 			<artifactId>directory-watcher</artifactId>
-			<version>0.5.1</version>
+			<version>0.18.0</version>
 		</dependency>
 	</dependencies>
 </project>
